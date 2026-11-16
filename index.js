@@ -107,4 +107,11 @@ app.post('/api/chat', async (req, res) => {
                         res.write(data: ${JSON.stringify(content)}\n\n);
                     }
 
+                } catch (error) {
+                    console.error(
+                        "Gagal parsing stream data:",
+                         error
+                    );
                 }
+            }
+        }
