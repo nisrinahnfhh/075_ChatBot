@@ -30,9 +30,9 @@ app.post('/api/chat', async (req, res) => {
 
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": Bearer ${process.env.OPENROUTER_API_KEY}
+                    "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`
                 },
-
+                
                 body: JSON.stringify({
                     model: "inclusionai/ling-3.2-flash:free",
                     messages: messages,
@@ -43,4 +43,12 @@ app.post('/api/chat', async (req, res) => {
             }
         );
 
-    
+        if (!response.ok) {
+            const errorData = await response.text();
+
+            console.error("OpenRouter Error:", errorData);
+
+            return res.status(response.status).json({
+                error: errorData
+            });
+        }
