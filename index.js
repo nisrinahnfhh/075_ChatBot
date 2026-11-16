@@ -24,7 +24,7 @@ app.post('/api/chat', async (req, res) => {
         }
 
         const response = await fetch(
-            "https://api.openrouter.ai/v1/chat/completions", 
+            "https://openrouter.ai/api/v1/chat/completions", 
             {
                 method: "POST",
 
@@ -35,7 +35,7 @@ app.post('/api/chat', async (req, res) => {
                 
                 body: JSON.stringify({
                     model: "inclusionai/ling-3.2-flash:free",
-                    messages: messages,
+                    messages: message,
                     temperature: 0.7,
                     max_tokens: 1000,
                     stream: true
@@ -83,11 +83,11 @@ app.post('/api/chat', async (req, res) => {
 
                 const trimmedLine = line.trim();
 
-                if (trimmedLine) {
+                if (!trimmedLine) {
                     continue;
                 }
 
-                if (trimmedLine.startsWith('data: ')) {
+                if (!trimmedLine.startsWith('data: ')) {
                     continue;
                 }
 
@@ -104,7 +104,7 @@ app.post('/api/chat', async (req, res) => {
                      json.choices?.[0]?.delta?.content;
 
                     if (content) {
-                        res.write(data: ${JSON.stringify(content)}\n\n);
+                        res.write(`data: ${JSON.stringify(content)}\n\n`);
                     }
 
                 } catch (error) {
@@ -129,9 +129,9 @@ app.post('/api/chat', async (req, res) => {
             });
         } else {
             res.write(
-                'data: ${JSON.stringify(
+                `data: ${JSON.stringify(
                 "Terjadi kesalahan pada server"
-            )}\n\n'
+            )}\n\n`
             );
 
             res.end();
@@ -141,5 +141,5 @@ app.post('/api/chat', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(Server berjalan di http://localhost:${PORT});
+    console.log(`Server berjalan di http://localhost:${PORT}`);
 });
